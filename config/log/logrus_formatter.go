@@ -6,11 +6,11 @@ import (
 	"time"
 )
 
-type LogFormatter struct{}
+type LogrusFormatter struct{}
 
 // 格式化loggrus输出
 
-func (s *LogFormatter) Format(entry *logrus.Entry) ([]byte, error) {
+func (s *LogrusFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	timestamp := time.Now().Local().Format("2006/01/02 - 15:04:05.000")
 	var callerName string
 	if len(entry.Caller.Function) >= 40 {
