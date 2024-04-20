@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/gin-gonic/gin v1.9.1
+	github.com/nightlyone/lockfile v1.0.0
 	github.com/sirupsen/logrus v1.9.3
 )
 

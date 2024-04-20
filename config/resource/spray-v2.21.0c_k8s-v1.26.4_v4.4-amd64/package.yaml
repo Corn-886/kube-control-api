@@ -1,0 +1,375 @@
+metadata:
+  version: spray-v2.21.0c_k8s-v1.26.4_v4.4-amd64
+  type: kubernetes-offline-resource
+  kuboard_spray_version:
+    min: v1.2.4
+  available_at:
+    - registry.cn-shanghai.aliyuncs.com/kuboard-spray/kuboard-spray-resource
+    - swr.cn-east-2.myhuaweicloud.com/kuboard/kuboard-spray-resource
+    - eipwork/kuboard-spray-resource
+  issue_date: "2023-4-29"
+  owner: "shaohq@foxmail.com"
+  can_upgrade_from:
+    include:
+      - spray-v2.21.0[a-c]_k8s-v1.26.[0-3]*_v4.[1-3]-amd64
+      - spray-v2.20.0[a-b]_k8s-v1.25.[0-9]*_v3.[0-9]*-amd64
+    exclude:
+  can_replace_to:
+  supported_os:
+    - distribution: Ubuntu
+      versions:
+        - "20.04"
+        - "22.04"
+    - distribution: Anolis
+      versions:
+        - "8.4"
+        - "8.5"
+        - "8.6"
+    - distribution: CentOS
+      versions:
+        - "7.6"
+        - "7.8"
+        - "7.9"
+        - "8"
+    - distribution: RedHat
+      versions:
+        - "7.9"
+        - "8.5"
+    - distribution: OracleLinux
+      versions:
+        - "8.5"
+        - "8.7"
+        - "9.1"
+    - distribution: Rocky
+      versions:
+        - "8.5"
+        - "8.7"
+        - "9.1"
+    - distribution: openEuler
+      versions:
+        - "20.03"
+        - "22.03"
+    - distribution: Kylin Linux Advanced Server
+      versions:
+        - "V10"
+    - distribution: openSUSE Leap
+      versions:
+        - "15.3"
+    - distribution: UnionTech OS Server 20
+      versions:
+        - "20"
+    - distribution: AlmaLinux
+      versions:
+        - "8.7"
+        - "9.1"
+  supported_feature:
+    eviction_hard: true
+
+data:
+  kubespray_version: v2.21.0c
+  supported_playbooks:
+    install_cluster: pb_cluster.yaml
+    remove_node: pb_remove_node.yaml
+    add_node: pb_scale.yaml
+    sync_nginx_config: pb_sync_nginx_config.yaml
+    sync_etcd_address: pb_sync_etcd_address.yaml
+    install_addon: pb_install_addon.yaml
+    remove_addon: pb_remove_addon.yaml
+    cluster_version_containerd: pb_cluster_version_containerd.yaml
+    cluster_version_docker: pb_cluster_version_docker.yaml
+    upgrade_cluster: pb_upgrade_cluster.yaml
+    drain_node: pb_drain_node.yaml
+    uncordon_node: pb_uncordon_node.yaml
+    cis_scan: true # 只在此属性为 true 的时候激活 CIS 扫描
+    renew_cert: pb_renew_cert.yaml
+    sync_container_engine_params: pb_sync_container_engine_params.yaml
+    backup_etcd: pb_backup_etcd.yaml
+    restore_etcd: pb_restore_etcd.yaml
+
+  kubernetes:
+    kube_version: "v1.26.4"
+    image_arch: amd64
+    gcr_image_repo: "gcr.io"
+    kube_image_repo: "k8s.gcr.io"
+    candidate_admission_plugins: AlwaysAdmit,AlwaysDeny,CertificateApproval,CertificateSigning,CertificateSubjectRestriction,DefaultIngressClass,DefaultStorageClass,DefaultTolerationSeconds,DenyServiceExternalIPs,EventRateLimit,ExtendedResourceToleration,ImagePolicyWebhook,LimitPodHardAntiAffinityTopology,LimitRanger,MutatingAdmissionWebhook,NamespaceAutoProvision,NamespaceExists,NamespaceLifecycle,NodeRestriction,OwnerReferencesPermissionEnforcement,PersistentVolumeClaimResize,PersistentVolumeLabel,PodNodeSelector,PodSecurity,PodTolerationRestriction,Priority,ResourceQuota,RuntimeClass,SecurityContextDeny,ServiceAccount,StorageObjectInUseProtection,TaintNodesByCondition,ValidatingAdmissionWebhook
+    default_enabled_admission_plugins: CertificateApproval,CertificateSigning,CertificateSubjectRestriction,DefaultIngressClass,DefaultStorageClass,DefaultTolerationSeconds,LimitRanger,MutatingAdmissionWebhook,NamespaceLifecycle,PersistentVolumeClaimResize,Priority,ResourceQuota,RuntimeClass,ServiceAccount,StorageObjectInUseProtection,TaintNodesByCondition,ValidatingAdmissionWebhook
+
+  container_engine:
+    - container_manager: "containerd"
+      params:
+        containerd_version: 1.6.19
+    # - container_manager: "docker"
+    #   params:
+    #     docker_version: "20.10"
+    #     docker_containerd_version: 1.4.12
+
+  vars:
+    target:
+      containerd_version: 1.6.19
+      etcd_version: v3.5.6
+      calico_version: "v3.24.5"
+      flannel_cni_version: "v1.2.0"
+      kubelet_checksums:
+        arm64:
+          v1.26.4: a925a5d20d29c362f0c4d60cb005f21d44576837510e0bc65c817961969b4e7e
+        amd64:
+          v1.26.4: 1e29fe7a097066cfbc1c1d2ab37f8b883c8f3fec414bafe8f2c7b960b0fb60fe
+      kubectl_checksums:
+        arm64:
+          v1.26.4: eea4054825a4c20cc09bc15abcb1354725ad886338e6892141a071caab91d4b6
+        amd64:
+          v1.26.4: 636ac0eaa467dbceda4b2c4e33662adc9709f5ce40341c9fc1a687fc276ac02d
+      kubeadm_checksums:
+        arm64:
+          v1.26.4: a97052d393e60027c354e97c88493aa14a76c8cfb7418bbdf8425b3711d86e3a
+        amd64:
+          v1.26.4: aa1a137aa2c3427f199ff652c96b11d6b124358296996eb7b8cbde220607b2fe
+      crun_checksums:
+        arm64:
+          1.4.5: 64a01114060ec12e66b1520c6ee6967410022d1ec73cdc7d14f952343c0769f2
+        amd64:
+          1.4.5: 84cf20a6060cd53ac21a0590367d1ab65f74baae005c42f2d5bc1af918470455
+      runc_checksums:
+        arm64:
+          v1.1.4: dbb71e737eaef454a406ce21fd021bd8f1b35afb7635016745992bbd7c17a223
+        amd64:
+          v1.1.4: db772be63147a4e747b4fe286c7c16a2edc4a8458bd3092ea46aaee77750e8ce
+      containerd_archive_checksums:
+        arm64:
+          1.6.19: 25a0dd6cce4e1058824d6dc277fc01dc45da92539ccb39bb6c8a481c24d2476e
+        amd64:
+          1.6.19: 3262454d9b3581f4d4da0948f77dde1be51cfc42347a1548bc9ab6870b055815..
+      nerdctl_archive_checksums:
+        arm64:
+          1.0.0: 27622c9d95efe6d807d5f3770d24ddd71719c6ae18f76b5fc89663a51bcd6208
+        amd64:
+          1.0.0: 3e993d714e6b88d1803a58d9ff5a00d121f0544c35efed3a3789e19d6ab36964
+      etcd_binary_checksums:
+        arm64:
+          v3.5.6: 888e25c9c94702ac1254c7655709b44bb3711ebaabd3cb05439f3dd1f2b51a87
+        amd64:
+          v3.5.6: 4db32e3bc06dd0999e2171f76a87c1cffed8369475ec7aa7abee9023635670fb
+      cni_binary_checksums:
+        arm64:
+          v1.2.0: 525e2b62ba92a1b6f3dc9612449a84aa61652e680f7ebf4eff579795fe464b57
+        amd64:
+          v1.2.0: f3a841324845ca6bf0d4091b4fc7f97e18a623172158b72fc3fdcdb9d42d2d37
+      flannel_cni_binary_checksums:
+        arm64:
+          v1.2.0: f813ae49b7b84eb95db73f7a3c34d2ee101f8cfc27e3a8054297a36d53308543
+        amd64:
+          v1.2.0: 63906a5b7dc78fbf1fbd484adbf4931aea5b15546ece3c7202c779ab9ea994a2
+      flannel_image_repo: "{{ docker_image_repo }}/flannelcni/flannel"
+      flannel_image_tag: "{{ flannel_version }}-{{ image_arch }}"
+      flannel_init_image_repo: "{{ docker_image_repo }}/flannelcni/flannel-cni-plugin"
+      flannel_init_image_tag: "{{ flannel_cni_version }}-{{ image_arch }}"
+      calicoctl_download_url: "https://github.com/projectcalico/calico/releases/download/{{ calico_ctl_version }}/calicoctl-linux-{{ image_arch }}"
+      calicoctl_binary_checksums:
+        amd64:
+          v3.24.5: 01e6c8a2371050f9edd0ade9dcde89da054e84d8e96bd4ba8cf82806c8d3e8e7
+        arm64:
+          v3.24.5: 2d56b768ed346129b0249261db27d97458cfb35f98bd028a0c817a23180ab2d2
+      calico_crds_archive_checksums:
+        v3.24.5: 10320b45ebcf4335703d692adacc96cdd3a27de62b4599238604bd7b0bedccc3
+      krew_archive_checksums:
+        linux:
+          arm64:
+            v0.4.3: 0994923848882ad0d4825d5af1dc227687a10a02688f785709b03549dd34d71d
+          amd64:
+            v0.4.3: 5df32eaa0e888a2566439c4ccb2ef3a3e6e89522f2f2126030171e2585585e4f
+      crictl_checksums:
+        arm64:
+          v1.26.0: b632ca705a98edc8ad7806f4279feaff956ac83aa109bba8a85ed81e6b900599
+        amd64:
+          v1.26.0: cda5e2143bf19f6b548110ffba0fe3565e03e8743fadd625fee3d62fc4134eed
+      snapshot_controller_image_tag: "v4.2.1"
+      dns_min_replicas: "{{ [ 2, groups['kube_control_plane'] | length ] | min }}"
+      kuboardspray_extra_downloads:
+        kuboard:
+          container: true
+          file: false
+          enabled: "{{ kuboard_enabled | default(false) }}"
+          version: "{{ kuboard_version | default('v3.5.2.4') }}"
+          repo: "eipwork/kuboard"
+          tag: "{{ kuboard_version }}"
+          sha256: ""
+          groups:
+            - kube_control_plane
+        netcheck_etcd:
+          container: true
+          file: false
+          enabled: "{{ deploy_netchecker }}"
+          version: "{{ netcheck_etcd_image_tag }}"
+          dest: "{{ local_release_dir }}/etcd-{{ netcheck_etcd_image_tag }}-linux-{{ image_arch }}.tar.gz"
+          repo: "{{ etcd_image_repo }}"
+          tag: "{{ netcheck_etcd_image_tag }}"
+          sha256: >-
+            {{ etcd_digest_checksum|d(None) }}
+          unarchive: false
+          owner: "root"
+          mode: "0755"
+          groups:
+            - k8s_cluster
+        coredns:
+          enabled: "{{ dns_mode in ['coredns', 'coredns_dual'] }}"
+          container: true
+          repo: "{{ coredns_image_repo }}"
+          tag: "{{ coredns_image_tag }}"
+          sha256: "{{ coredns_digest_checksum|default(None) }}"
+          groups:
+            - k8s_cluster
+
+  etcd:
+    etcd_version: v3.5.6
+    etcd_params:
+    etcd_deployment_type:
+      - "host"
+  dependency:
+    - name: crun
+      version: 1.4.5
+      target: crun_version
+    - name: krew
+      version: "v0.4.3"
+      target: krew_version
+    - name: runc
+      version: v1.1.4
+      target: runc_version
+    - name: cni-plugins
+      version: "v1.2.0"
+      target: cni_version
+    - name: crictl
+      version: "v1.26.0"
+      target: crictl_version
+    - name: nerdctl
+      version: "1.0.0"
+      target: nerdctl_version
+    - name: nginx_image
+      version: 1.23.2
+      target: nginx_image_tag
+    - name: coredns
+      target: coredns_version
+      version: "v1.9.3"
+    - name: cluster-proportional-autoscaler
+      target: dnsautoscaler_version
+      version: 1.8.5
+    - name: pause
+      target: pod_infra_version
+      version: "3.8"
+  network_plugin:
+    - name: calico
+      params:
+        calico_version: "v3.24.5"
+    - name: flannel
+      params:
+        flannel_version: "v0.20.2"
+        flannel_cni_version: "v1.2.0"
+  addon:
+    - name: kuboard
+      target: kuboard_enabled
+      lifecycle:
+        install_by_default: true
+        check:
+          shell: "kubectl get pods -n kuboard -l k8s.kuboard.cn/name=kuboard-v3"
+          keyword: 'kuboard-v3'
+        install_addon_tags:
+          - download
+          - upgrade
+          - kuboard
+        remove_addon_tags:
+          - upgrade
+          - kuboard
+        downloads:
+          - kuboard
+      params_default:
+        kuboard_version: 'v3.5.2.4'
+        kuboard_port: 80
+        kuboard_cluster_name: 'default'
+        kuboard_data_dir: '/root/kuboard-data'
+      params:
+    - name: nodelocaldns
+      target: enable_nodelocaldns
+      lifecycle:
+        install_by_default: true
+        check:
+          shell: "kubectl get daemonset -n kube-system nodelocaldns -o json"
+          keyword: '"k8s-app": "kube-dns"'
+        install_addon_tags:
+          - download
+          - upgrade
+          - coredns
+          - nodelocaldns
+        downloads:
+          - nodelocaldns
+          - coredns
+      params:
+        nodelocaldns_version: "1.22.18"
+        enable_nodelocaldns_secondary: false
+    - name: netchecker
+      target: deploy_netchecker
+      lifecycle:
+        install_by_default: true
+        check:
+          shell: "kubectl get deployment -n {{ netcheck_namespace | default('default') }} netchecker-server -o json"
+          keyword: "k8s-netchecker-server"
+        install_addon_tags:
+          - download
+          - upgrade
+          - netchecker
+        remove_addon_tags:
+          - upgrade
+          - netchecker
+        downloads:
+          - netcheck_server
+          - netcheck_agent
+          - netcheck_etcd
+      params:
+        netcheck_version: "v1.2.2"
+        netcheck_agent_image_repo: "{{ docker_image_repo }}/mirantis/k8s-netchecker-agent"
+        netcheck_agent_image_tag: "{{ netcheck_version }}"
+        netcheck_server_image_repo: "{{ docker_image_repo }}/mirantis/k8s-netchecker-server"
+        netcheck_server_image_tag: "{{ netcheck_version }}"
+        netcheck_etcd_image_tag: "v3.5.6"
+    # - name: helm
+    #   install_by_default: false
+    #   target: helm_enabled
+    #   params:
+    #     helm_version: "v3.7.1"
+    - name: metrics_server
+      target: metrics_server_enabled
+      lifecycle:
+        install_by_default: true
+        check:
+          shell: "kubectl get deployments -n kube-system metrics-server -o json"
+          keyword: "k8s.gcr.io/metrics-server/metrics-server"
+        install_addon_tags:
+          - download
+          - upgrade
+          - metrics_server
+        remove_addon_tags:
+          - upgrade
+          - metrics_server
+        downloads:
+          - metrics_server
+      params:
+        metrics_server_version: "v0.6.2"
+    # - name: cephfs_provisioner
+    #   install_by_default: false
+    #   target: cephfs_provisioner_enabled
+    #   params:
+    #     csi_attacher_image_repo: "{{ kube_image_repo }}/sig-storage/csi-attacher"
+    #     csi_attacher_image_tag: "v3.3.0"
+    #     csi_provisioner_image_repo: "{{ kube_image_repo }}/sig-storage/csi-provisioner"
+    #     csi_provisioner_image_tag: "v3.0.0"
+    #     csi_snapshotter_image_repo: "{{ kube_image_repo }}/sig-storage/csi-snapshotter"
+    #     csi_snapshotter_image_tag: "v4.2.1"
+    #     csi_resizer_image_repo: "{{ kube_image_repo }}/sig-storage/csi-resizer"
+    #     csi_resizer_image_tag: "v1.3.0"
+    #     csi_node_driver_registrar_image_repo: "{{ kube_image_repo }}/sig-storage/csi-node-driver-registrar"
+    #     csi_node_driver_registrar_image_tag: "v2.4.0"
+    #     csi_livenessprobe_image_repo: "{{ kube_image_repo }}/sig-storage/livenessprobe"
+    #     csi_livenessprobe_image_tag: "v2.5.0"
+    # - name: local_path_provisioner
+    #   install_by_default: false
+    #   target: local_path_provisioner_enabled
+    #   params:
+    #     local_path_provisioner_image_tag: "v0.0.19"

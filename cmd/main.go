@@ -15,7 +15,7 @@ func main() {
 
 	router := api.SetupRouter()
 
-	port := ":8001"
+	port := ":8080"
 
 	router.Run(constants.GetEnvOrDefault("KUBOARD_SPRAY_PORT", port))
 }
@@ -33,6 +33,6 @@ func initLogSetting() {
 		logrus.SetLevel(level)
 	} else {
 		fmt.Println("请检查 KUBOARD_SPRAY_LOGRUS_LEVEL 的值，可选的有 panic / fatal / error / warn / info / debug / trace ，当前为： " + logLevel)
-		logrus.SetLevel(logrus.InfoLevel)
+		logrus.SetLevel(logrus.TraceLevel)
 	}
 }
