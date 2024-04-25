@@ -121,7 +121,8 @@ func trimColoredText(text string) string {
 func (runner *CommandRunnerConfig) RunCommand() error {
 	runner.mutex = &sync.Mutex{}
 	runner.mutex.Lock() // 第一次加锁，确保go runcommand 能运行完
-	go runner.runCommand()
+	rwMutex := &sync.RWMutex{}
+	go runner.runCommand(rwMutex)
 	logrus.Trace("geting lock in main thread...")
 	runner.mutex.Lock()
 	logrus.Trace("Got response from exec: ", runner.Error)
@@ -129,7 +130,7 @@ func (runner *CommandRunnerConfig) RunCommand() error {
 	return runner.Error
 }
 
-func (runner *CommandRunnerConfig) runCommand() {
+func (runner *CommandRunnerConfig) runCommand(rwMurex *sync.RWMutex) {
 	defer func() {
 		if err := recover(); err != nil {
 			println(err)
@@ -139,7 +140,7 @@ func (runner *CommandRunnerConfig) runCommand() {
 		return
 	}()
 
-	lockFile, lockedFile, err := common.LockOwner(runner.Type, runner.Name)
+	lockedFile, err := common.LockOwner(runner.Type, runner.Name, rwMurex)
 
 	if err != nil {
 		runner.Error = err
@@ -147,7 +148,7 @@ func (runner *CommandRunnerConfig) runCommand() {
 		return
 	}
 
-	common.UnLockOwner(lockFile)
+	common.UnLockOwner(rwMurex)
 
 	pid := time.Now().Format("2006-01-02_15-04-05.999") + "_" + runner.Type
 	historyPath := filepath.Join(constants.GET_DATA_DIR(), runner.Type, runner.Name, "history")
