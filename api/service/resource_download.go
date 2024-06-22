@@ -2,12 +2,9 @@ package service
 
 import (
 	"github.com/gin-gonic/gin"
-	"kube-control-api/api/common"
-	"kube-control-api/api/oscmd"
-	"kube-control-api/config/constants"
+	"kube-control-api/api/common/constants"
+	"kube-control-api/api/workqueue"
 	"net/http"
-	"os"
-	"path/filepath"
 )
 
 /**
@@ -16,38 +13,15 @@ import (
 */
 func Download_kube_resource(c *gin.Context) {
 
-	versionDir := filepath.Join(constants.GET_CONFIG_RESOURCE_DIR(), constants.GET_KUBE_VERSION())
-	_, errExist := os.ReadDir(versionDir)
-	if errExist != nil {
-		common.HandleError(c, http.StatusConflict, "目录不存在", errExist)
-		return
+	downloadResourceTask := workqueue.Task{
+		Args:    []string{constants.GET_KUBE_DOCKER_IMAGE_ADDRESS(), constants.GET_KUBE_VERSION()},
+		Command: "scripts/pull-resource-package.sh",
+		Name:    "download resource aaaaaaaaaaaaaa",
+		Type:    "download resource",
 	}
+	workqueue.Evaluator.AddWork(&downloadResourceTask)
 
-	resultFunc := func(status oscmd.RunningStatus) (string, error) {
-
-		if status.IfSuccess {
-			return "download success", nil
-		} else {
-			return "下载失败，请查看日志", nil
-		}
-	}
-	downloadResourceTask := oscmd.CommandRunnerConfig{
-		Type:       "download resource",
-		Name:       constants.GET_KUBE_VERSION(),
-		ResultFunc: resultFunc,
-		Args:       []string{constants.GET_KUBE_DOCKER_IMAGE_ADDRESS()},
-		Command:    "scripts/pull-resource-package.sh",
-	}
-
-	if err := downloadResourceTask.RunCommand(); err != nil {
-		common.HandleError(c, http.StatusInternalServerError, "Faild to InstallCluster. ", err)
-	}
-	c.JSON(http.StatusOK, common.KuboardSprayResponse{
-		Code:    http.StatusOK,
-		Message: "success",
-		Data: gin.H{
-			"pid": downloadResourceTask.Pid,
-		},
+	c.JSON(http.StatusOK, gin.H{
+		"status": "200",
 	})
-
 }
