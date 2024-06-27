@@ -1,12 +1,23 @@
 # kube-control-api
-<b> 描述：</b> 对kubernetes 集群一些通用的接口都可封装到这里，后续可以搭建图形化界面提供使用，打算分两部分，
-一部分是运维需要的接口，例如搭建快速集群，还有一部分封装kubernetes的监控接口，如 etcd 的备份等。
 
+作为个人学习go语言的一个练手和学习kunernetes 源码项目，搭建一个web服务，参考kubernetes的controller-manager 的队列+生产者消费者模式，可以通过http接口的方式进行任务的提交和查询。通过把任务的执行和任务的提交分离，可以更好的控制任务的执行，避免任务的堆积。
 
-## 接口：
-### 初始化集群：
-endponint: POST /api/downloadResource <br>
-描述： 预先下载事先准备好的docker image, image 约1G，包含kubernetes 集群所需的image, 具体包版本可以查看 config/resource/spray-v2.21.0c_k8s-v1.26.4_v4.4-amd64/package.yaml <br>
-技术逻辑： POST 接口接受到image 信息类容，如果没有则读取默认配置config/resource/spray-v2.21.0c_k8s-v1.26.4_v4.4-amd64/package.yaml，然后运行pull-resource-package.sh 下载。<br>
-待改进： 这个接口使用了对文件加锁的形式来防止同时运行多个task。我觉得这样不太优雅，可以参考 kubernetes 源码使用queen + 生产者，消费者的模式提高效率，这种写法像Java的写法，失去Golang的灵活性
+## 版本：
+**v1.0.0**
+- 第一个版本，使用对文件加锁的方式实现了任务的提交和查询功能，参考 master v1。对文件加锁的方式，不适合高并发的场景，存在磁盘I/O，后续会使用更好的方式实现。只是作为一个学习的开始。
+
+**v2.0.0**
+- 第二版本，学习了kubernetes的controller-manager的队列+生产者消费者模式，实现了任务的提交和查询功能。使用了channel的方式实现了任务的提交和查询，避免了文件加锁的方式。后续会继续完善。
+
+**v2.1.0(学习计划)**
+- 学习kunernetes的informers的使用，当etcd改变时，自动创建任务，不需要手动提交任务。
+
+## 使用方式：
+
+### 1. 环境依赖
+- go version go1.18.2
+
+## 接口设计
+遵守 RESTful API 设计规范，接口设计如下：
+
 
